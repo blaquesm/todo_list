@@ -1,0 +1,37 @@
+.App {
+	position: absolute;
+	top: 10%;
+	left: 30%;
+	/* transform: translate(-10%, -10%); */
+}
+
+.header {
+	position: flex;
+	min-height: 10vh;
+	font-size: calc(10px + 2vmin);
+	color: black;
+	margin-top: 3px;
+	padding-top: 5px;
+}
+
+.loader {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 25px;
+	height: 25px;
+	border: 5px solid black;
+	border-radius: 50%;
+	border-left-color: transparent;
+	animation: loader 1s infinite;
+}
+
+@keyframes loader {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

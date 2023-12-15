@@ -8,7 +8,7 @@ export const App = () => {
 	useEffect(() => {
 		setIsLoadin(true);
 
-		fetch('http://localhost:3005/todos')
+		fetch('https://jsonplaceholder.typicode.com/todos')
 			.then((loadedData) => loadedData.json())
 			.then((loadedList) => {
 				setTodo(loadedList);
@@ -22,7 +22,7 @@ export const App = () => {
 			) : (
 				todo.map(({ id, title, text }) => (
 					<div key={id} className={style.header}>
-						{title} - {text}
+						{id} : {title}
 					</div>
 				))
 			)}

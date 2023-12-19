@@ -1,18 +1,28 @@
 .App {
 	position: absolute;
 	top: 10%;
-	left: 20%;
-	/* transform: translate(-10%, -10%); */
+	left: 25%;
 }
 
 .header {
-	position: flex;
-	min-height: 10vh;
-	font-size: calc(10px + 2vmin);
-	color: black;
-	margin-top: 3px;
-	padding-top: 5px;
-	text-align: center;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.li {
+	border: 1px solid #ccc;
+	display: flex;
+	justify-content: space-between;
+	padding: 0.5rem 2rem;
+	margin-bottom: 1rem;
+}
+
+.rm {
+	background: red;
+	color: #fff;
+	border-radius: 50%;
+	font-weight: bold;
 }
 
 .loader {

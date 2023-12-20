@@ -27,8 +27,10 @@ export const App = () => {
 				todo.map(({ id, title }) => (
 					<ul key={id} className={style.header}>
 						<li className={style.li}>
-							<input type="checkbox" /> {id} {title}
-							<span className={style.rm}>&times;</span>
+							<span>
+								<input type="checkbox" /> {id} {title}
+							</span>
+							<button className={style.rm}>&times;</button>
 						</li>
 					</ul>
 				))

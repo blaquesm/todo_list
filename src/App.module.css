@@ -25,6 +25,10 @@
 	font-weight: bold;
 }
 
+.done {
+	text-decoration: line-through;
+}
+
 .loader {
 	position: fixed;
 	top: 50%;

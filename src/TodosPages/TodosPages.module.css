@@ -1,0 +1,88 @@
+.App {
+	max-width: 600px;
+	margin: 20px auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.createTodo {
+	width: 100%;
+	margin-top: 10px; /* или другой отступ, который вам подходит */
+}
+.li {
+	border: 1px solid #ccc;
+	display: flex;
+	justify-content: space-between;
+	padding: 0.5rem 2rem;
+	margin-bottom: 1rem;
+}
+
+.title {
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+
+.actions {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.button {
+	padding: 8px 16px;
+	font-size: 16px;
+	cursor: pointer;
+}
+.sortButtonOn {
+	background: rgb(56, 185, 99);
+	color: #fff;
+	border-radius: 50%;
+	font-weight: bold;
+}
+.sortButtonOff {
+	background: rgb(63, 63, 63);
+	color: #faf6f6;
+	border-radius: 50%;
+	font-weight: bold;
+}
+
+.rm {
+	background: red;
+	color: #fff;
+	border-radius: 50%;
+	font-weight: bold;
+}
+
+.done {
+	text-decoration: line-through;
+}
+
+.loader {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 25px;
+	height: 25px;
+	border: 5px solid black;
+	border-radius: 50%;
+	border-left-color: transparent;
+	animation: loader 1s infinite;
+}
+
+@keyframes loader {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

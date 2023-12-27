@@ -1,0 +1,47 @@
+.Input {
+	background-color: #f9f9f9;
+	border: none;
+	outline-width: 1px;
+	outline-color: #cbd5e0;
+	color: #333;
+	border-radius: 0.375rem;
+	width: 100%;
+	padding: 0.625rem;
+	transition: outline-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.Input::placeholder {
+	font-size: 0.875rem;
+}
+.Input:focus-visible {
+	outline-width: 2px;
+	outline-color: #3b73ab;
+}
+.InputError::placeholder {
+	color: #c14d57;
+}
+.InputError:focus-visible {
+	outline-color: #ff0000;
+}
+.TextFieldLabel {
+	cursor: pointer;
+	display: block;
+	text-align: start;
+	font-size: 12px;
+	font-weight: 500;
+}
+.TextField {
+	position: relative;
+	margin-bottom: 17px;
+}
+.Error {
+	display: block;
+	color: red;
+	font-size: 12px;
+	position: relative;
+}
+.ButtonSvg {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-30%);
+}

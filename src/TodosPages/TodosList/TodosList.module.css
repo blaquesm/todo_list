@@ -1,0 +1,10 @@
+.Ul {
+	list-style: none;
+	padding: 0;
+}
+
+.noNotes {
+	text-align: center;
+	color: #777;
+	font-size: 18px;
+}

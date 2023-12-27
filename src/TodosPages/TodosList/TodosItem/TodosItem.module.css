@@ -1,0 +1,22 @@
+.buttonEdit {
+	margin-left: auto;
+}
+
+.li {
+	border: 1px solid #ccc;
+	display: flex;
+	justify-content: space-between;
+	padding: 0.5rem 2rem;
+	margin-bottom: 1rem;
+	align-items: center;
+}
+.rm {
+	background: red;
+	color: #fff;
+	border-radius: 50%;
+	font-weight: bold;
+	margin-left: 8px;
+}
+.done {
+	text-decoration: line-through;
+}

@@ -8,9 +8,10 @@ const TodosList = ({ editTodo, data, deleteTodo }) => {
 			{data.length === 0 ? (
 				<p className={style.noNotes}>Todo List is empty </p>
 			) : (
-				data.map((todo) => (
+				Object.entries(data).map(([key, todo]) => (
 					<TodoItem
-						key={todo.id}
+						key={key}
+						itemId={key}
 						{...todo}
 						editTodo={editTodo}
 						deleteTodo={deleteTodo}

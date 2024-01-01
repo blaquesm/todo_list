@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { parseYupError } from '../../../TextField/utils/parsYupError';
 import TextField from '../../../TextField/TextField';
 
-const EditTodo = ({ editTodo, handleEdit, ...props }) => {
+const EditTodo = ({ editTodo, handleEdit, itemId, ...props }) => {
 	const [value, setValue] = useState({ ...props });
 	const [error, setError] = useState({});
 
@@ -18,7 +18,7 @@ const EditTodo = ({ editTodo, handleEdit, ...props }) => {
 		event.preventDefault();
 		try {
 			if (isValid) {
-				await editTodo(props.id, value);
+				await editTodo(itemId, value);
 				handleEdit();
 			}
 		} catch (error) {
@@ -46,7 +46,7 @@ const EditTodo = ({ editTodo, handleEdit, ...props }) => {
 				name="title"
 				type="text"
 				placeholder="title"
-				value={value.title}
+				value={value.title || ''}
 				onChange={handleChange}
 				error={error.title}
 			/>

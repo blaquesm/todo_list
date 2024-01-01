@@ -3,7 +3,7 @@ import style from './TodosItem.module.css';
 import EditTodo from './EditTodo/EditTodo';
 import DeleteConfirmation from './DeleteConfirmation/DeleteConfirmation';
 
-const TodoItem = ({ data, editTodo, deleteTodo, ...props }) => {
+const TodoItem = ({ data, editTodo, deleteTodo, itemId, ...props }) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [isDone, setIsDone] = useState(false);
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -24,8 +24,8 @@ const TodoItem = ({ data, editTodo, deleteTodo, ...props }) => {
 		setShowDeleteConfirmation(false);
 	};
 
-	const handleDeleteConfirm = () => {
-		deleteTodo(props.id); // Передайте идентификатор для удаления
+	const handleDeleteConfirm = async () => {
+		await deleteTodo(itemId);
 		setShowDeleteConfirmation(false);
 	};
 
@@ -38,7 +38,12 @@ const TodoItem = ({ data, editTodo, deleteTodo, ...props }) => {
 	return (
 		<>
 			{isEdit ? (
-				<EditTodo {...props} handleEdit={handleEdit} editTodo={editTodo} />
+				<EditTodo
+					{...props}
+					itemId={itemId}
+					handleEdit={handleEdit}
+					editTodo={editTodo}
+				/>
 			) : (
 				<li className={style.li}>
 					<span className={isDone ? style.done : ''}>

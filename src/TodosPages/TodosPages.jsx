@@ -3,66 +3,97 @@ import style from './TodosPages.module.css';
 import TodosList from './TodosList/TodosList';
 import SearchQuery from './SearchQuery/SearchQuery';
 import CreateTodo from './CreateTodo/CreateTodo';
+import { ref, onValue, push, get, set, update, remove } from 'firebase/database';
+import { db } from '../fairbase';
 
 const TodoPage = () => {
 	const [todo, setTodo] = useState([]);
-	const [isLoadin, setIsLoadin] = useState(false);
+	const [isLoadin, setIsLoadin] = useState(true);
 	const [sortTodos, setSortTodos] = useState(false);
+	const [selectedItemId, setSelectedItemId] = useState(null);
+	const [istDeleting, setIsDeleting] = useState(false);
+	const todoDbRef = ref(db, 'posts');
 
-	const loadTodos = async () => {
+	const loadTodos = () => {
 		try {
-			const response = await fetch(`http://localhost:3005/posts`);
-			const data = await response.json();
-			const sortedData = sortTodos
-				? data.slice().sort((a, b) => a.title.localeCompare(b.title))
-				: data;
-			setTodo(sortedData);
-			setIsLoadin(false);
-		} catch (error) {}
-	};
+			onValue(todoDbRef, (snapshot) => {
+				const data = snapshot.val() || {};
+				console.log(data);
+				const dataArray = Object.keys(data).map((key) => ({
+					id: key,
+					...data[key],
+				}));
 
-	const createTodo = async (newTodo) => {
-		try {
-			const response = await fetch('http://localhost:3005/posts', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(newTodo),
+				const sortedData = sortTodos
+					? dataArray.slice().sort((a, b) => a.title.localeCompare(b.title))
+					: dataArray;
+
+				setTodo(sortedData);
+				setIsLoadin(false);
 			});
-
-			const createdTodo = await response.json();
-			setTodo((prevTodo) => [...prevTodo, createdTodo]);
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
-	const editTodo = async (id, payload) => {
-		const response = await fetch(`http://localhost:3005/posts/${id}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ ...payload }),
-		});
-
-		const todoIndex = todo.findIndex((prod) => prod.id === id);
-		const updateTodo = await response.json();
-		const copyData = todo.slice();
-		copyData[todoIndex] = updateTodo;
-		setTodo(copyData);
-		console.log('updateTodo', updateTodo);
+	const createTodo = async (newTodo) => {
+		try {
+			const newTodoRef = push(todoDbRef);
+			await set(newTodoRef, newTodo);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
-	const deleteTodo = async (id) => {
+	const editTodo = async (itemId, payload) => {
+		const updateTodoDbRef = ref(db, `posts/${itemId}`);
+
 		try {
-			await fetch(`http://localhost:3005/posts/${id}`, {
-				method: 'DELETE',
+			await update(updateTodoDbRef, {
+				...payload,
 			});
-			setTodo((prevTodo) => prevTodo.filter((todo) => todo.id !== id));
+
+			setTodo((prevTodo) => {
+				const updatedTodo = { ...prevTodo };
+				if (updatedTodo[itemId]) {
+					updatedTodo[itemId] = {
+						...updatedTodo[itemId],
+						...payload,
+					};
+				} else {
+					updatedTodo[itemId] = {
+						...payload,
+					};
+				}
+				return updatedTodo;
+			});
+
+			console.log('Todo успешно обновлен');
 		} catch (error) {
-			console.error('Error deleting todo:', error);
+			console.error('Ошибка при обновлении todo:', error);
+		}
+	};
+
+	const deleteTodo = async (itemId) => {
+		try {
+			setIsDeleting(true);
+			const deleteTodoDbRef = ref(db, `posts/${itemId}`);
+			await remove(deleteTodoDbRef);
+			const snapshot = await get(deleteTodoDbRef);
+			if (!snapshot.exists()) {
+				console.log('Todo успешно удален');
+				setTodo((prevTodo) => {
+					const updatedTodo = { ...prevTodo };
+					delete updatedTodo[itemId];
+					return updatedTodo;
+				});
+			} else {
+				console.error('Ошибка: Элемент не удален');
+			}
+		} catch (error) {
+			console.error('Ошибка при удалении todo:', error);
+		} finally {
+			setIsDeleting(false);
 		}
 	};
 

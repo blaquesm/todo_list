@@ -1,20 +1,28 @@
 import TextField from '../TextField/TextField';
 import { useState, useEffect } from 'react';
+import { ref, get } from 'firebase/database';
 import useDebounce from '../hooks/useDebounce';
+import { db } from '../../fairbase';
 import style from './SearchQuery.module.css';
 
 const SearchQuery = ({ setIsLoadin, setTodo }) => {
 	const [searchQuery, setSearchQueru] = useState('');
-	const debounceValue = useDebounce(searchQuery, 1000);
+	const debounceValue = useDebounce(searchQuery, 1500);
 	const [error, setError] = useState({});
 
 	const searchTodos = async () => {
 		try {
-			const response = await fetch(
-				`http://localhost:3005/posts?q=${debounceValue}`,
-			);
-			const data = await response.json();
-			setTodo(data);
+			const todosRef = ref(db, 'posts');
+			const snapshot = await get(todosRef);
+			if (snapshot.exists()) {
+				const data = snapshot.val();
+				const filteredTodos = Object.values(data).filter((todo) =>
+					todo.title.toLowerCase().includes(debounceValue.toLowerCase()),
+				);
+				setTodo(filteredTodos);
+			} else {
+				setTodo([]);
+			}
 			setIsLoadin(false);
 		} catch (error) {}
 	};
@@ -31,11 +39,15 @@ const SearchQuery = ({ setIsLoadin, setTodo }) => {
 		const fetchTodos = async () => {
 			try {
 				setIsLoadin(true);
-				const response = await fetch(
-					`http://localhost:3005/posts?q=${debounceValue}`,
-				);
-				const data = await response.json();
-				setTodo(data);
+				const todosRef = ref(db, 'posts');
+				const snapshot = await get(todosRef);
+
+				if (snapshot.exists()) {
+					const data = snapshot.val();
+					setTodo(Object.values(data));
+				} else {
+					setTodo([]);
+				}
 			} catch (error) {
 			} finally {
 				setIsLoadin(false);
